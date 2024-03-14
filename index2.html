@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>تحويل الرابط إلى باركود وحفظه كصورة</title>
+    <style>
+        body {
+            text-align: center;
+            padding-top: 50px;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 300px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-top: 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #qrcode canvas {
+            margin-top: 15px;
+            opacity: 0; /* إعداد الشفافية للتأثير */
+            transition: opacity 1s ease-out; /* تأثير الحركة */
+        }
+
+        /* تطبيق الشفافية الكاملة عند إضافة الفئة */
+        .show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <input type="text" id="text" placeholder="أدخل الرابط هنا">
+    <button onclick="generateQRCode()">تحويل إلى باركود</button>
+    <div id="qrcode"></div>
+    <button id="save-btn" style="display:none;">حفظ الباركود كصورة</button>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+    <script>
+        function generateQRCode() {
+            var qrcodeContainer = document.getElementById('qrcode');
+            qrcodeContainer.innerHTML = ""; // إزالة الباركود السابق إن وجد
+            var text = document.getElementById('text').value; // الحصول على النص من حقل الإدخال
+            if(text) {
+                new QRCode(qrcodeContainer, {
+                    text: text,
+                    width: 128,
+                    height: 128,
+                    colorDark : "#000000",
+                    colorLight : "#ffffff",
+                    correctLevel : QRCode.CorrectLevel.H
+                });
+                document.getElementById('save-btn').style.display = 'inline'; // عرض زر الحفظ
+                
+                // تأخير للسماح بتحميل الباركود ثم إضافة الفئة للتأثير
+                setTimeout(() => {
+                    var canvas = qrcodeContainer.querySelector('canvas');
+                    if(canvas) {
+                        canvas.classList.add('show');
+                    }
+                }, 100); // قد تحتاج إلى ضبط التوقيت بناءً على سرعة توليد الباركود
+            } else {
+                alert("الرجاء إدخال النص أو الرابط");
+            }
+        }
+
+        document.getElementById('save-btn').addEventListener('click', function() {
+            var canvas = document.querySelector('#qrcode canvas');
+            var image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+            var link = document.createElement('a');
+            link.download = 'qrcode.png';
+            link.href = image;
+            link.click();
+        });
+    </script>
+</body>
+</html>
