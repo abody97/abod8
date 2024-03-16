@@ -1,0 +1,47 @@
+
+        body {
+            text-align: center;
+            padding-top: 50px;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 300px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-top: 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #qrcode canvas {
+            margin-top: 15px;
+            opacity: 0; /* إعداد الشفافية للتأثير */
+            transition: opacity 1s ease-out; /* تأثير الحركة */
+        }
+
+        /* تطبيق الشفافية الكاملة عند إضافة الفئة */
+        .show {
+            opacity: 1;
+        }
